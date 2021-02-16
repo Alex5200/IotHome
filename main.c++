@@ -84,7 +84,6 @@ void setup() {
 
 }
 
-// For this project, you don't need to change anything in the loop function. Basically it ensures that you ESP is connected to your broker
 void loop() {
 
   if (!client.connected()) {
@@ -94,24 +93,16 @@ void loop() {
     client.connect("ESP8266Client");
 
   now = millis();
-  // Publishes new temperature and humidity every 30 seconds
   if (now - lastMeasure > 30000) {
     lastMeasure = now;
-    // Check if any reads failed and exit early (to try again).
     if (isnan(h) || isnan(t) || isnan(f)) {
       Serial.println("Failed to read from DHT sensor!");
       return;
     }
 
-    // Computes temperature values in Celsius
     float hic = dht.computeHeatIndex(t, h, false);
     static char temperatureTemp[7];
     dtostrf(hic, 6, 2, temperatureTemp);
-    
-    // Uncomment to compute temperature values in Fahrenheit 
-    // float hif = dht.computeHeatIndex(f, h);
-    // static char temperatureTemp[7];
-    // dtostrf(hif, 6, 2, temperatureTemp);
     
     static char humidityTemp[7];
     dtostrf(h, 6, 2, humidityTemp);
