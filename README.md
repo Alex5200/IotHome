@@ -2,7 +2,7 @@
 ### Данный умный дом основан на микроконтроллере ESP8266 и микрокомпьютере raspberry pi 
 
 
-<a href="https://www.buymeacoffee.com/alexandrlyachov" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee"style="height: 60px !important;width: 217px !important;" ></a>
+<a href="https://www.buymeacoffee.com/appcraftstudio" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 
 # ESP8266
