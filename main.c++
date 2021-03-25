@@ -104,3 +104,4 @@ void loop() {
     
     static char humidityTemp[7];
     dtostrf(h, 6, 2, humidityTemp);
+}
