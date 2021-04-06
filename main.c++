@@ -1,27 +1,27 @@
 
-//  Блок инициализации библиотеки
+//  add Libery 
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 //  end
-//  Блик инициализации переменных настройки wifi 
+//  add peremennie dlya wifi 
 const char* ssid = "REPLACE_WITH_YOUR_SSID";
 const char* password = "REPLACE_WITH_YOUR_PASSWORD";
 //  end
-//  Блок инициализации подключения к Raspberry pi
+//  connect server Raspberry pi
 const char* mqtt_server = "REPLACE_WITH_YOUR_RPI_IP_ADDRESS";
 //  end
-//  Зарегистрировать подключенное устройствоq
+//  ad client for wifi server 
 WiFiClient espClient;
 PubSubClient client(espClient);
 // end
-//      Добавление переменной пина лампы 
-const int lamp = 4;
+//      pin controll relay
+const int relay = 4;
 // end
-//      Переменные для создания переменных обновления
+//      reload timer
 long now = millis();
 long lastMeasure = 0;
 // end
-//      Функция настройки Wifi
+//    setimgs for connect Wifi
 void setup_wifi() {
   delay(10);
   Serial.println();
@@ -36,8 +36,8 @@ void setup_wifi() {
   Serial.print("WiFi connected - ESP IP address: ");
   Serial.println(WiFi.localIP());
 }
-//      End Функции Wifi
-//      Функция приема сообщений с сервера Raspberry pi
+//      End function setup Wifi
+//      check pocket for Raspberry pi
 void callback(String topic, byte* message, unsigned int length) {
   Serial.print("Message arrived on topic: ");
   Serial.print(topic);
@@ -50,28 +50,28 @@ void callback(String topic, byte* message, unsigned int length) {
   }
   Serial.println();
 
-  if(topic=="room/lamp"){ // Проверка состояния переключения
+  if(topic=="room/relay"){ // recuest data releay
       Serial.print("Changing Room lamp to ");
       if(messageTemp == "on"){
-        digitalWrite(lamp, HIGH);
+        digitalWrite(relay, HIGH);
         Serial.print("On");
       }
       else if(messageTemp == "off"){
-        digitalWrite(lamp, LOW);
+        digitalWrite(relay, LOW);
         Serial.print("Off");
       }
   }
   Serial.println();
 }
-//      End функций сообщений сервера
-//      Функция переподключения к серверу 
+//      End  check pocket for Raspberry pi
+//      Wifi reconect 
 void reconnect() {
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     if (client.connect("ESP8266Client")) {
       Serial.println("connected");  
    
-      client.subscribe("room/lamp");
+      client.subscribe("room/relay");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -80,18 +80,18 @@ void reconnect() {
     }
   }
 }
-//      End функции переподключения к серверу 
-//      Функция инициализации 
+//      End  Wifi reconect 
+//      Setup pins and serial port
 void setup() {
-  pinMode(lamp, OUTPUT); // инициализация пина
-  Serial.begin(115200); // вывод данных в монитор порта
-  setup_wifi(); // Подключение к wifi
-  client.setServer(mqtt_server, 1883); // Подключение к серверу raspberry pi
-  client.setCallback(callback); // проверку состояния
+  pinMode(relay, OUTPUT); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+  Serial.begin(115200); // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+  setup_wifi(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ wifi
+  client.setServer(mqtt_server, 1883); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ raspberry pi
+  client.setCallback(callback); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 }
-//End функций инициализаций
+//End  Setup pins and serial port
 
-//      Цикличная функция
+//      loop
 void loop() { 
   if (!client.connected()) {
     reconnect();
@@ -101,14 +101,7 @@ void loop() {
   now = millis();
   if (now - lastMeasure > 30000) {
     lastMeasure = now;
-    if (isnan(h) || isnan(t) || isnan(f)) {
-      Serial.println("Failed to read from DHT sensor!");
-      return;
-    }
-    float hic = dht.computeHeatIndex(t, h, false);
-    static char temperatureTemp[7];
-    dtostrf(hic, 6, 2, temperatureTemp);
-    static char humidityTemp[7];
-    dtostrf(h, 6, 2, humidityTemp);
+    callback();
+  }
 }
-//      End функции цикла
+//      End пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
