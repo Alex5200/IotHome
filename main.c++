@@ -83,11 +83,11 @@ void reconnect() {
 //      End  Wifi reconect 
 //      Setup pins and serial port
 void setup() {
-  pinMode(relay, OUTPUT); // ������������� ����
-  Serial.begin(115200); // ����� ������ � ������� �����
-  setup_wifi(); // ����������� � wifi
-  client.setServer(mqtt_server, 1883); // ����������� � ������� raspberry pi
-  client.setCallback(callback); // �������� ���������
+  pinMode(relay, OUTPUT); // pin out for controll relay
+  Serial.begin(115200); // setings monitor
+  setup_wifi(); // setups wifi
+  client.setServer(mqtt_server, 1883); //connct to raspberry pi server
+  client.setCallback(callback); // send message
 }
 //End  Setup pins and serial port
 
@@ -104,4 +104,4 @@ void loop() {
     callback();
   }
 }
-//      End ������� �����
+//      End loop
