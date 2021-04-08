@@ -65,7 +65,7 @@ void callback(String topic, byte* message, unsigned int length) {
 }
 //      End  check pocket for Raspberry pi
 //      Wifi reconect 
-void reconnect() {
+void reconnect_server_raspberryPi() {
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     if (client.connect("ESP8266Client")) {
@@ -94,7 +94,7 @@ void setup() {
 //      loop
 void loop() { 
   if (!client.connected()) {
-    reconnect();
+    reconnect_server_raspberryPi();
   }
   if(!client.loop())
     client.connect("ESP8266Client");
