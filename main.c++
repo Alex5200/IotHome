@@ -101,7 +101,7 @@ void loop() {
   now = millis();
   if (now - lastMeasure > 30000) {
     lastMeasure = now;
-    callback();
+    client.getCallback(callback());
   }
 }
 //      End loop
